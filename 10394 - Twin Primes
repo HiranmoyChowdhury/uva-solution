@@ -1,0 +1,29 @@
+#include<bits/stdc++.h>
+#define bst           ios_base::sync_with_stdio(0);
+#define bug(x)        cerr<<#x<<'='<<x<<endl;
+#define lp(i,a,b)     for(int i=a; i<=b; i++)
+#define ll            long long int
+#define eb            emplace_back
+#define pb            push_back
+#define mp            make_pair
+using namespace std;
+bool check[20000099]={};
+vector<ll> primes;
+int main(){
+    ll n, i, j, k, l , u, s;
+    primes.eb(2);
+    for( i=3; i<10000; i+=2){
+        if(check[i]==false){
+            primes.eb(i);
+            for(j=i*i; j<=20000099; j+=(i+i)) check[j]=true;
+        }
+    }
+    vector<pair<ll,ll>> twin;
+    for(i=3; i<=20000000; i+=2){
+        if(check[i]==false && check[i+2]==false) twin.eb(i, i+2);
+    }
+    while(cin>>s){
+        printf("(%lld, %lld)\n", twin[s-1].first, twin[s-1].second);
+    }
+    return 0;
+}
