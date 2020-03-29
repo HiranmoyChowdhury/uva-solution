@@ -1,0 +1,95 @@
+#include<bits/stdc++.h>
+#define bst           ios_base::sync_with_stdio(0);
+#define bug(x)        cerr<<#x<<'='<<x<<endl;
+#define lp(i,a,b)     for(int i=a; i<=b; i++)
+#define ll            long long int
+#define eb            emplace_back
+#define pb            push_back
+#define mp            make_pair
+using namespace std;
+bool check[20000099]={};
+vector<ll> primes;
+void sieve(){
+    primes.eb(2);
+    for(ll i=3 ; i<1000000; i+=2){
+        if(check[i]==false){
+            primes.eb(i);
+            if(i*i<1000000) for(ll j=i*i; j<1000000; j+=i+i) check[j]=true;
+        }
+    }
+}
+ll solve(vector<pair<ll, ll>>divi, vector<pair<ll, ll>> divp){  ///counting how many number will make lcm n with current number
+    ll i, j, k, m=0;
+    ll limit=divp.size();
+    ll ans=1;
+    for(i=0; i<limit ;i++){
+        while(divi[m].first!=divp[i].first) m++;
+        if(divi[m].second==divp[i].second){
+            ans*=(divp[i].second+1);
+        }
+    }
+    return ans;
+}
+int main(){
+    bst
+    sieve();
+    ll n, i, j, k;
+    while(1){
+        cin>>n;
+        if(n==0) break;
+        vector<pair<ll, ll>> divi;
+        ll keep=n;
+        for(i=0; primes[i]*primes[i]<=keep; i++){  /// prime divisors
+            if(keep%primes[i]==0){
+                ll cnt=0;
+                while(keep%primes[i]==0){
+                    cnt++;
+                    keep/=primes[i];
+                }
+                divi.eb(primes[i], cnt);
+            }
+        }
+        if(keep>1) divi.eb(keep, 1);
+        
+        ll ans=0;
+        
+        for(i=2; i*i<=n; i++){/// will found all divisors and send them into solve 
+            if(n%i==0){
+                keep=i;
+                vector<pair<ll, ll>> divp;
+                for(j=0; primes[j]*primes[j]<=keep; j++){
+                    if(keep%primes[j]==0){
+                        ll cnt=0;
+                        while(keep%primes[j]==0) cnt++, keep/=primes[j];
+                        divp.eb(primes[j], cnt);
+                    }
+                }
+                if(keep>1) divp.eb(keep, 1);
+                ans+=solve(divi, divp);
+                if(i!=n/i){   /// sqrt(n) could be integer...so,won't take a number twice
+                    keep=n/i;
+                    divp.clear();
+                    
+                    for(j=0; primes[j]*primes[j]<=keep; j++){
+                        if(keep%primes[j]==0){
+                            ll cnt=0;
+                            while(keep%primes[j]==0) cnt++, keep/=primes[j];
+                            divp.eb(primes[j], cnt);
+                        }
+                    }
+                    if(keep>1) divp.eb(keep, 1);
+                }
+                ans+=solve(divi, divp);
+            }
+        }
+        keep=1;
+        for(i=0; i<divi.size(); i++) keep*=(divi[i].second+1);
+        ans+=keep;
+        ans/=2;   ///here all pairs comes twice
+        ans++;///only 2 pair {(n, n) & (n, 1) } come once...and, we divide it by 2...so, add 1
+        cout<<n<<' '<<ans<<endl;
+        
+        
+    }
+    return 0;
+}
