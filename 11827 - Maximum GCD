@@ -1,0 +1,44 @@
+#include<bits/stdc++.h>
+#define bst           ios_base::sync_with_stdio(0);
+#define bug(x)        cerr<<#x<<'='<<x<<endl;
+#define lp(i,a,b)     for(int i=a; i<=b; i++)
+#define ll            long long int
+#define eb            emplace_back
+#define pb            push_back
+#define mp            make_pair
+using namespace std;
+int main(){
+    bst
+    ll n, i, j, k;
+    cin>>n;
+    string s;
+    getline(cin, s);
+    while(n--){
+        string str;
+        getline(cin, str);
+        vector<ll> num;
+        ll limit = str.size();
+        for(i=0; i<limit ;i++){
+            if(str[i]!=' '){
+                ll keep=0;
+                while(i<limit){
+                    if(str[i]==' ') break;
+                    keep*=10;
+                    keep+=(str[i]-'0');
+                    i++;
+                }
+                num.eb(keep);
+            }
+        }
+        ll ans=0;
+        limit= num.size();
+        for(i=0; i<limit ;i++){
+            for(j=0; j<limit ;j++){
+                if(i==j) continue;
+                ans=max(ans, __gcd(num[i], num[j]));
+            }
+        }
+        cout<<ans<<endl;
+    }
+    return 0;
+}
