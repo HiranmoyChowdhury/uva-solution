@@ -1,0 +1,66 @@
+#include<bits/stdc++.h>
+#define bst           ios_base::sync_with_stdio(0);
+#define bug(x)        cerr<<#x<<'='<<x<<endl;
+#define lp(i,a,b)     for(int i=a; i<=b; i++)
+#define ll            long long int
+#define eb            emplace_back
+#define pb            push_back
+#define mp            make_pair
+using namespace std;
+bool check[1000099];
+ll lcm[1000099];
+vector<pair<ll,ll>> divisors[1000099];
+ll primes[1000099];
+
+void process(ll n){
+    lcm[n]=lcm[n]%10;
+}
+
+int main(){
+    ll i, j, k;
+    for(i=5; i<1000099; i+=5) check[i]=true;
+                              
+    for(i=3; i<1000099; i+=2){   /// 2 & 5 makes zero..we will count later
+        if(check[i]==false){
+            for(j=i; j<1000099; j+=i){
+                check[j]=true;
+                ll keep=j;
+                ll cnt=0;
+                while(keep%i==0) cnt++, keep/=i;
+                divisors[j].eb(i, cnt);
+            }
+        }
+    }
+    lcm[1]=1;
+    for(i=2; i<1000099; i++){
+        ll limit=divisors[i].size();
+        lcm[i]=lcm[i-1];
+        for(j=0; j<limit ; j++){
+            ll x=divisors[i][j].first, y=divisors[i][j].second;
+            if(primes[x]<y){
+                for(k=primes[x]; k<y; k++) lcm[i]*=x;   ///before the number maximum prime number occur in a single number
+                primes[x]=y;
+            }
+        }
+        process(i);
+    }
+
+
+    while(1){
+        ll x;
+        cin>>x;
+        if(x==0) break;
+        ll keep=x;
+        ll five=0;
+        while(keep>=5) five++, keep/=5; ///we skipped 2 & 5
+        ll two=0;
+        keep=x;
+        while(keep>=2) two++, keep/=2;
+        keep=1;
+         two-=five;         /// one '2' and one '5' makes '0'...
+         while(two--) keep*=2;
+         keep*=lcm[x];
+         cout<<keep%10<<endl;
+    }
+    return 0;
+}
