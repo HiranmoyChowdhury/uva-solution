@@ -1,0 +1,41 @@
+#include<bits/stdc++.h>
+#define bst           ios_base::sync_with_stdio(0);
+#define bug(x)        cerr<<#x<<'='<<x<<endl;
+#define lp(i,a,b)     for(int i=a; i<=b; i++)
+#define ll            long long int
+#define eb            emplace_back
+#define pb            push_back
+#define mp            make_pair
+using namespace std;
+bool check[10000099];
+vector<ll> primes;
+int main(){
+    ll i, j, k;
+    primes.eb(2);
+    for(i=3; i<10000099; i+=2){
+        if(check[i]==false){
+            primes.eb(i);
+            for(j=i*i; j<10000099; j+=i+i) check[j]=true;
+        }
+    }
+    while(1){
+        ll n;
+        cin>>n;
+        n=abs(n);  /// n could be negative
+        if(n==0) break;
+        vector<ll> divi;
+        for(i=0; primes[i]*primes[i]<=n; i++){
+            if(n%primes[i]==0){
+                divi.eb(primes[i]);
+                while(n%primes[i]==0) n/=primes[i];
+            }
+        }
+        if(n>1) divi.eb(n);
+        n=divi.size();
+        if(n<2) cout<<-1<<endl;
+        else cout<<divi[n-1]<<endl;
+    }
+
+
+    return 0;
+}
