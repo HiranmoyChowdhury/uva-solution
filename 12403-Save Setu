@@ -1,0 +1,25 @@
+#include<bits/stdc++.h>
+#define bst           ios_base::sync_with_stdio(0);
+#define bug(x)        cerr<<#x<<'='<<x<<endl;
+#define lp(i,a,b)     for(int i=a; i<=b; i++)
+#define ll            long long int
+#define eb            emplace_back
+#define pb            push_back
+using namespace std;
+int main(){
+    ll t;
+    cin>>t;
+    ll ans=0;
+    while(t--){
+         ll x;
+        string str;
+        cin>>str;
+        if(str[0]=='r') cout<<ans<<endl;
+        else{
+             cin>>x;
+             ans+=x;
+        }
+         
+    }
+
+}
