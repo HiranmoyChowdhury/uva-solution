@@ -1,0 +1,88 @@
+#include<bits/stdc++.h>
+#define bst           (ios_base:: sync_with_stdio(false),cin.tie(NULL));
+#define bug(x)        cerr<<#x<<'='<<x<<endl;
+#define lp(i,a,b)     for(int i=a; i<=b; i++)
+#define ll            long long int
+#define eb            emplace_back
+#define pb            push_back
+#define inp(n)        scanf("%d", &n)
+using namespace std;
+int num1, num2;
+int pos1[100099], pos2[100099];
+ll sum[100099], cnt[100099];
+int cas;
+void f(int pos){
+    if(cnt[pos]) pos2[pos]=pos;
+    else{
+        f(pos2[pos]);
+        pos2[pos]=pos2[pos2[pos]];
+    }
+}
+
+int main(){
+    int n, m;
+    while(scanf("%d%d",&n,&m)!=EOF){
+        for(ll i=0; i<=n; i++){
+            pos1[i]=i;
+            pos2[i]=i;
+            sum[i]=i;
+            cnt[i]=1;
+        }
+        while(m--){
+            inp(cas);
+            if(cas==1){
+                inp(num1); inp(num2);
+                
+                f(pos1[num1]);
+                int p1=pos2[pos1[num1]];
+                pos1[num1]=p1;
+                
+                
+                f(pos1[num2]);
+                int p2=pos2[pos1[num2]];
+                pos1[num2]=p2;
+                
+                if(p1==p2) continue;
+                sum[p2]+=sum[p1];
+                cnt[p2]+=cnt[p1];
+
+                cnt[p1]=sum[p1]=0;
+
+                pos2[p1]=p2;
+                pos1[num1]=p2;
+            }
+            else if(cas==2){
+                inp(num1); inp(num2);
+                
+                
+                f(pos1[num1]);
+                int p1=pos2[pos1[num1]];
+                pos1[num1]=p1;
+                
+                
+                f(pos1[num2]);
+                int p2=pos2[pos1[num2]];
+                pos1[num2]=p2;
+                
+                if(p1==p2) continue;
+                sum[p2]+=num1;
+                cnt[p2]++;
+                cnt[p1]--;
+                sum[p1]-=num1;
+                pos1[num1]=pos1[num2];
+            }
+            else{
+                inp(num1);
+                
+                
+                f(pos1[num1]);
+                int p=pos2[pos1[num1]];
+                pos1[num1]=p;
+                
+                printf("%lld %lld\n", cnt[p], sum[p]);
+
+            }
+        }
+    }
+    return 0;
+}
